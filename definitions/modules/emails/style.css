@@ -5,7 +5,7 @@ body {
 .body {
 	font-size: 18px;
 	color: #212121;
-	background: #3f50b5;
+	background: #ec407a;
 }
 
 .footer-content, .header-content, .main-content {
@@ -45,7 +45,7 @@ hr {
 .button {
 	display: inline-block;
 	margin: 2ch 0;
-	background: #ff4081;
+	background: #039be5;
 	color: #fff !important;
 	font-size: .875rem;
 	font-family: inherit;

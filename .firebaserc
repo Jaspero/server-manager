@@ -1,14 +1,14 @@
 {
   "targets": {
-    "jaspero-jms": {
+    "jp-server-manager": {
       "hosting": {
         "cms": [
-          "jaspero-jms"
+          "jp-server-manager"
         ]
       }
     }
   },
   "projects": {
-    "default": "jaspero-jms"
+    "default": "jp-server-manager"
   }
 }

@@ -12,6 +12,14 @@ export class Collections {
 	static History = 'history';
 	static Notes = 'notes';
 
+	/**
+	 *
+	 * user created modules
+	 */
+
+	static Devices = 'devices';
+	static Tasks = 'tasks';
+
 	static HistorySub(collection: string, docId?: string) {
 		return `${collection}/${docId || '{docId}'}/${Collections.History}`;
 	}

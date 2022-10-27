@@ -44,6 +44,10 @@ export const STATIC_CONFIG = {
    * Used for redirecting all authenticated users
    * visiting pages for unauthenticated users
    */
+
+  /**
+   * user created routes
+   */
   dashboardRoute: ['/dashboard'],
   navigation: {
     items: [
@@ -101,7 +105,21 @@ export const STATIC_CONFIG = {
         icon: 'dns',
         label: 'SYSTEM',
         type: 'expandable'
-      }
+      },
+      {
+        icon: 'domain',
+        label: 'Devices',
+        type: 'link',
+        value: '/m/devices',
+        hasPermission: Collections.Devices
+      },
+      {
+        icon: 'task',
+        label: 'Tasks',
+        type: 'link',
+        value: '/m/tasks',
+        hasPermission: Collections.Tasks
+      },
     ] as NavigationItemWithActive[]
   }
 };

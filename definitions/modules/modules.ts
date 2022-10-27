@@ -6,6 +6,8 @@ import {STORAGE_MODULE} from './storage.module';
 import {AUTOMATIC_EMAILS_MODULE} from './emails/automatic-emails.module';
 import {SENT_EMAILS_MODULE} from './emails/sent-emails.module';
 import {ROLE_HISTORY_MODULE} from './role-history.module';
+import {DEVICES_MODULE} from './devices.module';
+import {TASKS_MODULE} from './tasks.module';
 
 /**
  * Schemas for all of the modules
@@ -18,6 +20,15 @@ export const MODULES = [
   ROLE_HISTORY_MODULE,
   STORAGE_MODULE,
 
+
   AUTOMATIC_EMAILS_MODULE,
   SENT_EMAILS_MODULE,
+
+
+  /*
+  user created modules
+   */
+
+  DEVICES_MODULE,
+  TASKS_MODULE,
 ];

@@ -1,0 +1,24 @@
+{
+  "name": "server-manager-os",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js"
+  },
+  "author": "Jaspero Ltd",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.1.3",
+    "extract-zip": "^2.0.1",
+    "firebase-admin": "^11.2.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  }
+}
