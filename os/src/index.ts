@@ -14,7 +14,6 @@ admin.initializeApp({
   databaseURL: 'https://jp-server-manager-default-rtdb.europe-west1.firebasedatabase.app'
 });
 
-
 class ServerManager {
 
   configuration: {
@@ -26,6 +25,7 @@ class ServerManager {
       directory: string;
       process: ChildProcessByStdio<Writable, Readable, Readable>;
       task: Task;
+      memoryUsageInterval: NodeJS.Timer;
     }
   } = {};
 
@@ -33,7 +33,23 @@ class ServerManager {
     this._parseConfiguration();
     this._startPing();
     this._listenForTasks();
-    // this._howMuchMemoryUsed();
+  }
+
+  stopTask(id: string) {
+    if (!this.activeTasks[id]) {
+      return;
+    }
+
+    this._stopPingMemoryUsage(id);
+
+    this.activeTasks[id].process.stdout.destroy();
+    this.activeTasks[id].process.stderr.destroy();
+    this.activeTasks[id].process.kill('SIGINT');
+    fs.rmSync(this.activeTasks[id].directory, {
+      recursive: true,
+      force: true
+    });
+    delete this.activeTasks[id];
   }
 
   private _parseConfiguration() {
@@ -46,24 +62,32 @@ class ServerManager {
     }
   }
 
+  private _startPingMemoryUsage(taskId: string) {
+    const memoryUsage = () => {
+      admin.database().ref(`/devices/${this.configuration.id}/memory/${taskId}`).set(process.memoryUsage().rss).catch((error) => {
+        console.log(`Failed to ping memory usage for task "${taskId}"`, error);
+      });
+    };
+    memoryUsage();
+    this.activeTasks[taskId].memoryUsageInterval = setInterval(() => {
+      memoryUsage();
+    }, 3000);
+  }
+
+  private _stopPingMemoryUsage(task) {
+    clearInterval(this.activeTasks[task].memoryUsageInterval);
+  }
+
   private _startPing() {
     const writePing = () => {
-      admin.database().ref(`/devices/${this.configuration.id}/lastActiveOn`).set(Date.now());
+      admin.database().ref(`/devices/${this.configuration.id}/lastActiveOn`).set(Date.now()).catch((error) => {
+        console.log(`Failed to ping device lastActiveOn`, error);
+      });
     };
     writePing();
     setInterval(() => {
       writePing();
     }, 15000);
-
-    const memoryUsage = () =>{
-      admin.database().ref(`/devices/${this.configuration.id}/memoryUsage`).set(process.memoryUsage().rss)
-    }
-    memoryUsage();
-    setInterval(() => {
-      memoryUsage();
-    }, 3000);
-
-
 
   }
 
@@ -155,70 +179,18 @@ class ServerManager {
       process: spawn(startUpScript.command, startUpScript.args, {
         detached: true,
         cwd: extractedTaskDirectory
-      })
+      }),
+      memoryUsageInterval: null
     };
+    this._startPingMemoryUsage(task.id);
 
     this.activeTasks[task.id].process.on('exit', () => {
       this.stopTask(task.id);
     });
 
-    this.activeTasks[task.id].process.stdout.pipe(process.stdout);
-
+    // this.activeTasks[task.id].process.stdout.pipe(process.stdout);
     // this.activeTasks[task.id].process.stderr.pipe(process.stderr);
   }
-
-  stopTask(id: string) {
-    if (!this.activeTasks[id]) {
-      return;
-    }
-
-    this.activeTasks[id].process.stdout.destroy();
-    this.activeTasks[id].process.stderr.destroy();
-    this.activeTasks[id].process.kill('SIGINT');
-    fs.rmSync(this.activeTasks[id].directory, {
-      recursive: true,
-      force: true
-    });
-    delete this.activeTasks[id];
-  }
-
-
-
-
-  // private _allocateMemory(size) {
-  //   // Simulate allocation of bytes
-  //   const numbers = size / 8;
-  //   const arr = [];
-  //   arr.length = numbers;
-  //   for (let i = 0; i < numbers; i++) {
-  //     arr[i] = i;
-  //   }
-  //   return arr;
-  // }
-  //
-  // private _howMuchMemoryUsed() {
-  //   const memoryLeakAllocations = [];
-  //
-  //   const field = "heapUsed";
-  //   const allocationStep = 10000 * 1024; // 10MB
-  //
-  //   const write = () => {
-  //     const allocation = this._allocateMemory(allocationStep);
-  //     console.log(allocation);
-  //     memoryLeakAllocations.push(allocation);
-  //
-  //     const mu = process.memoryUsage();
-  //     // # bytes / KB / MB / GB
-  //     const gbNow = mu[field] / 1024 / 1024 / 1024;
-  //     const gbRounded = Math.round(gbNow * 100) / 100;
-  //
-  //     console.log(`Heap allocated ${gbRounded} GB`);
-  //   };
-  //   write();
-  //   setInterval(() => {
-  //     write();
-  //   }, 15000);
-  // }
 }
 
 const manager = new ServerManager();

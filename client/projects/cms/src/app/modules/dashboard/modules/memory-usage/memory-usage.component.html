@@ -1,0 +1,21 @@
+<mat-toolbar role="heading" color="primary">
+    <span>Memory Usage</span>
+    <div class="flex-1"></div>
+</mat-toolbar>
+
+<section>
+<!--<ul>-->
+<!--    <li *ngFor="let item of ramUsed">{{item}}</li>-->
+<!--</ul>-->
+
+    <ng-container *ngIf="mode$ | async as mode">
+        <ng-container [ngSwitch]="mode">
+            <ng-container *ngSwitchCase="'task'">
+                <h1>this is task mode</h1>
+            </ng-container>
+            <ng-container *ngSwitchCase="'device'">
+                <h1>this is device mode</h1>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</section>

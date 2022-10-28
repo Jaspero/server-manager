@@ -51,6 +51,11 @@ const routes: Routes = [{
         .then(m => m.StorageRoutingModule)
     },
     {
+      path: 'memory-usage',
+      loadChildren: () => import('./modules/memory-usage/memory-usage.module')
+          .then(m => m.MemoryUsageModule)
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full'

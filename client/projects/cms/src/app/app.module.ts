@@ -18,71 +18,71 @@ import {appInit} from './shared/utils/app-init';
 import {TranslocoRootModule} from './transloco-root.module';
 
 export function init(injector: Injector) {
-  return () => {
-    return appInit(injector);
-  };
+    return () => {
+        return appInit(injector);
+    };
 }
 
 const ENTRY_COMPONENTS = [
-  ConfirmationComponent
+    ConfirmationComponent
 ];
 
 const PIPES = [
-  MathPipe
+    MathPipe
 ];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ...ENTRY_COMPONENTS,
-    ...PIPES
-  ],
-  imports: [
-    /**
-     * Replace with another implementation
-     * if necessary
-     */
-    FirebaseModule.forRoot(),
+    declarations: [
+        AppComponent,
+        ...ENTRY_COMPONENTS,
+        ...PIPES
+    ],
+    imports: [
+        /**
+         * Replace with another implementation
+         * if necessary
+         */
+        FirebaseModule.forRoot(),
 
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
 
-    // Material
-    MatProgressBarModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatButtonModule,
+        // Material
+        MatProgressBarModule,
+        MatSnackBarModule,
+        MatDialogModule,
+        MatButtonModule,
 
-    /**
-     * External
-     */
-    TranslocoRootModule
-  ],
-  providers: [
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: 'en-US'
-    },
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: 'outline'
-      }
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: init,
-      deps: [Injector],
-      multi: true
-    },
-    {
-      provide: 'MAIN_STATE',
-      useExisting: StateService
-    }
-  ],
-  bootstrap: [AppComponent]
+        /**
+         * External
+         */
+        TranslocoRootModule
+    ],
+    providers: [
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'en-US'
+        },
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: {
+                appearance: 'outline'
+            }
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: init,
+            deps: [Injector],
+            multi: true
+        },
+        {
+            provide: 'MAIN_STATE',
+            useExisting: StateService
+        }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
