@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/jaspero/server-manager/compare/v1.0.0...v1.1.0) (2022-10-27)
+
+
+### Features
+
+* OS script ([c502167](https://github.com/jaspero/server-manager/commit/c5021673882b087bdf9f163a818612f4b854ee0c))
+
 # 1.0.0 (2022-10-27)
 
 
