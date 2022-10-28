@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/jaspero/server-manager/compare/v1.1.0...v1.2.0) (2022-10-28)
+
+
+### Features
+
+* OS script with memory usage filter ([6cb224b](https://github.com/jaspero/server-manager/commit/6cb224b0bc882a9f79f370e558004a81e0217cb1))
+
 # [1.1.0](https://github.com/jaspero/server-manager/compare/v1.0.0...v1.1.0) (2022-10-27)
 
 
